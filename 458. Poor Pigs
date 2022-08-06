@@ -1,0 +1,7 @@
+class Solution {
+public:
+    int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+        int cnt = minutesToTest / minutesToDie;
+        return ceil(log(buckets) / log(cnt + 1));
+    }
+};
