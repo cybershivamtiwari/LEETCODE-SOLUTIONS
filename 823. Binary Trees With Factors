@@ -1,0 +1,47 @@
+// 823. Binary Trees With Factors
+// https://leetcode.com/problems/binary-trees-with-factors/
+typedef vector<int> vi;
+
+// The idea is kind of simple; if a number is a product of other 2, then we add the product of the trees that can be formed from each of those numbers
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        long long MOD = 1e9 + 7;
+        // We first sort, so we first process the smaller numbers, so we can use their answers to calculate the answer of the bigger numbers
+        sort(arr.begin(), arr.end());
+        // array of answers, so we don't have to process them again
+        vi answers = vi(arr.size(), 0);
+        long long answer = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            answer = 0;
+            int j = 0, k = i - 1;
+            while(j <= k) {
+                if((long long)arr[j] * arr[k] == arr[i]) { // if a number is product of other 2, then we do what we stated above
+                    answer += (long long)answers[j] * answers[k];
+                    answer %= MOD;
+                    if(arr[j] != arr[k]) { // if the smaller numbers are different, then we can add the combinations of inverting those 2 numbers
+                        answer += (long long)answers[j] * answers[k];
+                        answer %= MOD;
+                    }
+                }
+                if((long long)arr[j] * arr[k] >= arr[i]) { // if the product is bigger, we want to reduce the product on the next iteration
+                    k--;
+                } else { // we want to increase the product otherwise
+                    j++;
+                }
+            }
+            answer++;
+            answer %= MOD;
+            answers[i] = answer;
+        }
+        
+        // At the end, we simply add the partial answers to get the result
+        answer = 0;
+        for(int a: answers) {
+            answer += a;
+            answer %= MOD;
+        }
+        
+        return answer;
+    }
+};
