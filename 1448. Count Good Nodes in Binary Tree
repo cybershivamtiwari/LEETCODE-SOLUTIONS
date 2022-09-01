@@ -1,0 +1,12 @@
+var goodNodes = function(root, max = root.val) {
+    let output = 0
+    // Only add to output if we meet the condition
+    if(root.val >= max) output++
+    // Increase the max if we encounter a val greater than max
+    max = Math.max(Math.max(root.val, max))
+    // Traverse the tree to compare more nodes
+    if(root.left) output += goodNodes(root.left, max)
+    if(root.right) output += goodNodes(root.right, max)
+
+    return output   
+};
