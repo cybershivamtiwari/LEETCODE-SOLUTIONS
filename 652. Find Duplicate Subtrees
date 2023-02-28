@@ -1,0 +1,29 @@
+from collections import Counter
+
+class Solution:
+    def findDuplicateSubtrees(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[TreeNode]
+        """
+
+        # approach: save results of postorder travel of each subtree as key
+
+        result = []
+        counter = Counter()
+
+        def postorder(node):
+            if not node:
+                return None
+
+            node_key = (node.val, postorder(node.left), postorder(node.right))
+            counter[node_key] += 1
+
+            if counter[node_key] == 2:
+                result.append(node)
+
+            return node_key
+
+        postorder(root)
+
+        return result
